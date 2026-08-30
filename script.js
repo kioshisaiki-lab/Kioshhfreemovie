@@ -52,7 +52,7 @@ function showMedia(items, type) {
 }
 
 function loadContent() {
-  const genreId = genreSelect.value;
+  const genreId = genreSelect ? genreSelect.value : '';
   let url = '';
 
   if (genreId) {
@@ -67,58 +67,74 @@ function loadContent() {
   getMedia(url, currentType);
 }
 
-// Category Buttons Switcher
-btnMovies.addEventListener('click', () => {
-  currentType = 'movie';
-  btnMovies.classList.add('active');
-  btnTV.classList.remove('active');
-  loadContent();
-});
+// Category Switcher
+if (btnMovies && btnTV) {
+  btnMovies.addEventListener('click', () => {
+    currentType = 'movie';
+    btnMovies.classList.add('active');
+    btnTV.classList.remove('active');
+    loadContent();
+  });
 
-btnTV.addEventListener('click', () => {
-  currentType = 'tv';
-  btnTV.classList.add('active');
-  btnMovies.classList.remove('active');
-  loadContent();
-});
+  btnTV.addEventListener('click', () => {
+    currentType = 'tv';
+    btnTV.classList.add('active');
+    btnMovies.classList.remove('active');
+    loadContent();
+  });
+}
 
 // Genre Dropdown Event
-genreSelect.addEventListener('change', loadContent);
+if (genreSelect) {
+  genreSelect.addEventListener('change', loadContent);
+}
 
 // Search Feature
-searchBtn.addEventListener('click', () => {
-  const query = searchInput.value.trim();
-  if(query) {
-    sectionTitle.textContent = `Search Results: ${query}`;
-    getMedia(`https://api.themoviedb.org/3/search/${currentType}?api_key=${API_KEY}&query=${query}`, currentType);
-  }
-});
+if (searchBtn && searchInput) {
+  searchBtn.addEventListener('click', () => {
+    const query = searchInput.value.trim();
+    if(query) {
+      sectionTitle.textContent = `Search Results: ${query}`;
+      getMedia(`https://api.themoviedb.org/3/search/${currentType}?api_key=${API_KEY}&query=${query}`, currentType);
+    }
+  });
 
-// Player Modal
+  searchInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+      searchBtn.click();
+    }
+  });
+}
+
+// Player Modal (Gamit ang updated at working embed servers)
 function openModal(title, overview, id, type) {
-  const s1 = type === 'tv' ? `https://vidsrc.me/embed/tv?id=${id}&s=1&e=1` : `https://vidsrc.me/embed/movie?id=${id}`;
-  const s2 = type === 'tv' ? `https://embed.su/embed/tv/${id}/1/1` : `https://embed.su/embed/movie/${id}`;
-  const s3 = type === 'tv' ? `https://vidsrc.cc/v2/embed/tv/${id}/1/1` : `https://vidsrc.cc/v2/embed/movie/${id}`;
+  const s1 = type === 'tv' ? `https://vidlink.pro/tv/${id}/1/1` : `https://vidlink.pro/movie/${id}`;
+  const s2 = type === 'tv' ? `https://vidsrc.cc/v2/embed/tv/${id}/1/1` : `https://vidsrc.cc/v2/embed/movie/${id}`;
+  const s3 = type === 'tv' ? `https://www.2embed.cc/embedtv/${id}&s=1&e=1` : `https://www.2embed.cc/embed/${id}`;
+  const s4 = type === 'tv' ? `https://vidsrc.pro/embed/tv/${id}/1/1` : `https://vidsrc.pro/embed/movie/${id}`;
 
   modalBody.innerHTML = `
-    <h3 style="margin-bottom:8px; font-size:16px;">${title}</h3>
+    <h3 style="margin-bottom:8px; font-size:16px; color:#fff;">${title}</h3>
     
-    <div style="display:flex; gap:8px; margin-bottom:10px;">
+    <div style="display:flex; gap:6px; margin-bottom:10px; flex-wrap:wrap;">
       <button onclick="document.getElementById('playerIframe').src='${s1}'" style="padding:6px 12px; font-size:12px; background:#e50914; color:#fff; border:none; border-radius:4px; cursor:pointer; font-weight:bold;">Server 1</button>
       <button onclick="document.getElementById('playerIframe').src='${s2}'" style="padding:6px 12px; font-size:12px; background:#22252f; color:#fff; border:none; border-radius:4px; cursor:pointer; font-weight:bold;">Server 2</button>
       <button onclick="document.getElementById('playerIframe').src='${s3}'" style="padding:6px 12px; font-size:12px; background:#22252f; color:#fff; border:none; border-radius:4px; cursor:pointer; font-weight:bold;">Server 3</button>
+      <button onclick="document.getElementById('playerIframe').src='${s4}'" style="padding:6px 12px; font-size:12px; background:#22252f; color:#fff; border:none; border-radius:4px; cursor:pointer; font-weight:bold;">Server 4</button>
     </div>
 
-    <iframe id="playerIframe" src="${s1}" width="100%" height="250" frameborder="0" allowfullscreen style="border-radius:6px; background:#000;"></iframe>
+    <iframe id="playerIframe" src="${s1}" width="100%" height="250" frameborder="0" allowfullscreen allow="autoplay; encrypted-media" style="border-radius:6px; background:#000;"></iframe>
     <p style="margin-top:10px; color:#ccc; font-size:12px; max-height:80px; overflow-y:auto;">${overview}</p>
   `;
   modal.style.display = 'flex';
 }
 
-closeModal.addEventListener('click', () => {
-  modal.style.display = 'none';
-  modalBody.innerHTML = '';
-});
+if (closeModal) {
+  closeModal.addEventListener('click', () => {
+    modal.style.display = 'none';
+    modalBody.innerHTML = '';
+  });
+}
 
 window.addEventListener('click', (e) => {
   if (e.target === modal) {
