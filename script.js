@@ -12,7 +12,7 @@ const closeModal = document.getElementById('closeModal');
 const btnMovies = document.getElementById('btnMovies');
 const btnTV = document.getElementById('btnTV');
 
-let currentType = 'movie'; // Default: movie
+let currentType = 'movie';
 
 async function getMedia(url, type) {
   try {
@@ -76,11 +76,11 @@ searchBtn.addEventListener('click', () => {
   }
 });
 
-// Player Modal (Gumagana sa Movies at TV Series)
+// Player Modal (In-update sa mas gumaganang player server)
 function openModal(title, overview, id, type) {
   const embedUrl = type === 'tv' 
-    ? `https://vidsrc.icu/embed/tv/${id}/1/1` // Season 1 Episode 1 default
-    : `https://vidsrc.icu/embed/movie/${id}`;
+    ? `https://vidsrc.cc/v2/embed/tv/${id}/1/1`
+    : `https://vidsrc.cc/v2/embed/movie/${id}`;
 
   modalBody.innerHTML = `
     <h3 style="margin-bottom:10px; font-size:16px;">${title}</h3>
