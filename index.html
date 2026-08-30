@@ -3,35 +3,33 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>1Flex - Stream & Discover Movies</title>
+  <title>KioshFlex - Stream Movies & TV Shows</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
   <!-- Navigation Bar -->
   <header>
-    <div class="logo">1FLEX</div>
+    <div class="logo">KIOSHFLEX</div>
     <div class="search-bar">
       <input type="text" id="searchInput" placeholder="Search movies, TV shows...">
       <button id="searchBtn">Search</button>
     </div>
   </header>
 
-  <!-- Hero Section -->
-  <section class="hero">
-    <h1>Discover Unlimited Movies & TV Shows</h1>
-    <p>Explore trending titles, cast details, and official trailers.</p>
-  </section>
+  <!-- Category Filter Buttons -->
+  <nav class="category-nav">
+    <button id="btnMovies" class="nav-btn active">Movies</button>
+    <button id="btnTV" class="nav-btn">TV Series</button>
+  </nav>
 
   <!-- Content Container -->
   <main class="container">
     <h2 id="sectionTitle">Trending Movies</h2>
-    <div id="movieGrid" class="movie-grid">
-      <!-- Cards will be populated dynamically -->
-    </div>
+    <div id="movieGrid" class="movie-grid"></div>
   </main>
 
-  <!-- Trailer / Info Modal -->
+  <!-- Player Modal -->
   <div id="movieModal" class="modal">
     <div class="modal-content">
       <span class="close-btn" id="closeModal">&times;</span>
