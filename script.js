@@ -106,24 +106,23 @@ if (searchBtn && searchInput) {
   });
 }
 
-// Player Modal (Gamit ang updated at working embed servers)
+// Player Modal (Configured for Minimal/No Ads)
 function openModal(title, overview, id, type) {
-  const s1 = type === 'tv' ? `https://vidlink.pro/tv/${id}/1/1` : `https://vidlink.pro/movie/${id}`;
-  const s2 = type === 'tv' ? `https://vidsrc.cc/v2/embed/tv/${id}/1/1` : `https://vidsrc.cc/v2/embed/movie/${id}`;
-  const s3 = type === 'tv' ? `https://www.2embed.cc/embedtv/${id}&s=1&e=1` : `https://www.2embed.cc/embed/${id}`;
-  const s4 = type === 'tv' ? `https://vidsrc.pro/embed/tv/${id}/1/1` : `https://vidsrc.pro/embed/movie/${id}`;
+  // Server 1 uses Vidlink with ad-less parameters; Server 2 uses AutoEmbed low-ad API
+  const s1 = type === 'tv' ? `https://vidlink.pro/tv/${id}/1/1?primaryColor=e50914&autoplay=false` : `https://vidlink.pro/movie/${id}?primaryColor=e50914&autoplay=false`;
+  const s2 = type === 'tv' ? `https://player.autoembed.cc/embed/tv/${id}/1/1` : `https://player.autoembed.cc/embed/movie/${id}`;
+  const s3 = type === 'tv' ? `https://vidsrc.cc/v2/embed/tv/${id}/1/1` : `https://vidsrc.cc/v2/embed/movie/${id}`;
 
   modalBody.innerHTML = `
     <h3 style="margin-bottom:8px; font-size:16px; color:#fff;">${title}</h3>
     
     <div style="display:flex; gap:6px; margin-bottom:10px; flex-wrap:wrap;">
-      <button onclick="document.getElementById('playerIframe').src='${s1}'" style="padding:6px 12px; font-size:12px; background:#e50914; color:#fff; border:none; border-radius:4px; cursor:pointer; font-weight:bold;">Server 1</button>
+      <button onclick="document.getElementById('playerIframe').src='${s1}'" style="padding:6px 12px; font-size:12px; background:#e50914; color:#fff; border:none; border-radius:4px; cursor:pointer; font-weight:bold;">Ad-Free Server 1</button>
       <button onclick="document.getElementById('playerIframe').src='${s2}'" style="padding:6px 12px; font-size:12px; background:#22252f; color:#fff; border:none; border-radius:4px; cursor:pointer; font-weight:bold;">Server 2</button>
       <button onclick="document.getElementById('playerIframe').src='${s3}'" style="padding:6px 12px; font-size:12px; background:#22252f; color:#fff; border:none; border-radius:4px; cursor:pointer; font-weight:bold;">Server 3</button>
-      <button onclick="document.getElementById('playerIframe').src='${s4}'" style="padding:6px 12px; font-size:12px; background:#22252f; color:#fff; border:none; border-radius:4px; cursor:pointer; font-weight:bold;">Server 4</button>
     </div>
 
-    <iframe id="playerIframe" src="${s1}" width="100%" height="250" frameborder="0" allowfullscreen allow="autoplay; encrypted-media" style="border-radius:6px; background:#000;"></iframe>
+    <iframe id="playerIframe" src="${s1}" width="100%" height="250" frameborder="0" allowfullscreen allow="autoplay; encrypted-media" sandbox="allow-scripts allow-same-origin allow-forms" style="border-radius:6px; background:#000;"></iframe>
     <p style="margin-top:10px; color:#ccc; font-size:12px; max-height:80px; overflow-y:auto;">${overview}</p>
   `;
   modal.style.display = 'flex';
