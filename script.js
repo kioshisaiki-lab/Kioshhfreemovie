@@ -51,21 +51,23 @@ function showMedia(items, type) {
 }
 
 // Category Switcher
-btnMovies.addEventListener('click', () => {
-  currentType = 'movie';
-  btnMovies.classList.add('active');
-  btnTV.classList.remove('active');
-  sectionTitle.textContent = 'Trending Movies';
-  getMedia(`https://api.themoviedb.org/3/trending/movie/week?api_key=${API_KEY}`, 'movie');
-});
+if(btnMovies && btnTV) {
+  btnMovies.addEventListener('click', () => {
+    currentType = 'movie';
+    btnMovies.classList.add('active');
+    btnTV.classList.remove('active');
+    sectionTitle.textContent = 'Trending Movies';
+    getMedia(`https://api.themoviedb.org/3/trending/movie/week?api_key=${API_KEY}`, 'movie');
+  });
 
-btnTV.addEventListener('click', () => {
-  currentType = 'tv';
-  btnTV.classList.add('active');
-  btnMovies.classList.remove('active');
-  sectionTitle.textContent = 'Trending TV Series';
-  getMedia(`https://api.themoviedb.org/3/trending/tv/week?api_key=${API_KEY}`, 'tv');
-});
+  btnTV.addEventListener('click', () => {
+    currentType = 'tv';
+    btnTV.classList.add('active');
+    btnMovies.classList.remove('active');
+    sectionTitle.textContent = 'Trending TV Series';
+    getMedia(`https://api.themoviedb.org/3/trending/tv/week?api_key=${API_KEY}`, 'tv');
+  });
+}
 
 // Search
 searchBtn.addEventListener('click', () => {
@@ -76,7 +78,7 @@ searchBtn.addEventListener('click', () => {
   }
 });
 
-// Player Modal (In-update sa mas gumaganang player server)
+// Player Modal - Gumagamit ng working vidsrc.cc server
 function openModal(title, overview, id, type) {
   const embedUrl = type === 'tv' 
     ? `https://vidsrc.cc/v2/embed/tv/${id}/1/1`
