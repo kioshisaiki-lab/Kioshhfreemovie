@@ -11,6 +11,7 @@ const modalBody = document.getElementById('modalBody');
 const closeModal = document.getElementById('closeModal');
 const btnMovies = document.getElementById('btnMovies');
 const btnTV = document.getElementById('btnTV');
+const genreSelect = document.getElementById('genreSelect');
 
 let currentType = 'movie';
 
@@ -50,26 +51,41 @@ function showMedia(items, type) {
   });
 }
 
-// Category Switcher
-if(btnMovies && btnTV) {
-  btnMovies.addEventListener('click', () => {
-    currentType = 'movie';
-    btnMovies.classList.add('active');
-    btnTV.classList.remove('active');
-    sectionTitle.textContent = 'Trending Movies';
-    getMedia(`https://api.themoviedb.org/3/trending/movie/week?api_key=${API_KEY}`, 'movie');
-  });
+function loadContent() {
+  const genreId = genreSelect.value;
+  let url = '';
 
-  btnTV.addEventListener('click', () => {
-    currentType = 'tv';
-    btnTV.classList.add('active');
-    btnMovies.classList.remove('active');
-    sectionTitle.textContent = 'Trending TV Series';
-    getMedia(`https://api.themoviedb.org/3/trending/tv/week?api_key=${API_KEY}`, 'tv');
-  });
+  if (genreId) {
+    const selectedText = genreSelect.options[genreSelect.selectedIndex].text;
+    sectionTitle.textContent = `${selectedText} (${currentType === 'movie' ? 'Movies' : 'TV Shows'})`;
+    url = `https://api.themoviedb.org/3/discover/${currentType}?api_key=${API_KEY}&with_genres=${genreId}&sort_by=popularity.desc`;
+  } else {
+    sectionTitle.textContent = `Trending ${currentType === 'movie' ? 'Movies' : 'TV Series'}`;
+    url = `https://api.themoviedb.org/3/trending/${currentType}/week?api_key=${API_KEY}`;
+  }
+
+  getMedia(url, currentType);
 }
 
-// Search
+// Category Buttons Switcher
+btnMovies.addEventListener('click', () => {
+  currentType = 'movie';
+  btnMovies.classList.add('active');
+  btnTV.classList.remove('active');
+  loadContent();
+});
+
+btnTV.addEventListener('click', () => {
+  currentType = 'tv';
+  btnTV.classList.add('active');
+  btnMovies.classList.remove('active');
+  loadContent();
+});
+
+// Genre Dropdown Event
+genreSelect.addEventListener('change', loadContent);
+
+// Search Feature
 searchBtn.addEventListener('click', () => {
   const query = searchInput.value.trim();
   if(query) {
@@ -78,24 +94,38 @@ searchBtn.addEventListener('click', () => {
   }
 });
 
-// Player Modal - Gumagamit ng working vidsrc.cc server
+// Player Modal
 function openModal(title, overview, id, type) {
-  const embedUrl = type === 'tv' 
-    ? `https://vidsrc.cc/v2/embed/tv/${id}/1/1`
-    : `https://vidsrc.cc/v2/embed/movie/${id}`;
+  const s1 = type === 'tv' ? `https://vidsrc.me/embed/tv?id=${id}&s=1&e=1` : `https://vidsrc.me/embed/movie?id=${id}`;
+  const s2 = type === 'tv' ? `https://embed.su/embed/tv/${id}/1/1` : `https://embed.su/embed/movie/${id}`;
+  const s3 = type === 'tv' ? `https://vidsrc.cc/v2/embed/tv/${id}/1/1` : `https://vidsrc.cc/v2/embed/movie/${id}`;
 
   modalBody.innerHTML = `
-    <h3 style="margin-bottom:10px; font-size:16px;">${title}</h3>
-    <iframe src="${embedUrl}" width="100%" height="250" frameborder="0" allowfullscreen style="border-radius:6px; background:#000;"></iframe>
-    <p style="margin-top:10px; color:#ccc; font-size:12px; max-height:100px; overflow-y:auto;">${overview}</p>
+    <h3 style="margin-bottom:8px; font-size:16px;">${title}</h3>
+    
+    <div style="display:flex; gap:8px; margin-bottom:10px;">
+      <button onclick="document.getElementById('playerIframe').src='${s1}'" style="padding:6px 12px; font-size:12px; background:#e50914; color:#fff; border:none; border-radius:4px; cursor:pointer; font-weight:bold;">Server 1</button>
+      <button onclick="document.getElementById('playerIframe').src='${s2}'" style="padding:6px 12px; font-size:12px; background:#22252f; color:#fff; border:none; border-radius:4px; cursor:pointer; font-weight:bold;">Server 2</button>
+      <button onclick="document.getElementById('playerIframe').src='${s3}'" style="padding:6px 12px; font-size:12px; background:#22252f; color:#fff; border:none; border-radius:4px; cursor:pointer; font-weight:bold;">Server 3</button>
+    </div>
+
+    <iframe id="playerIframe" src="${s1}" width="100%" height="250" frameborder="0" allowfullscreen style="border-radius:6px; background:#000;"></iframe>
+    <p style="margin-top:10px; color:#ccc; font-size:12px; max-height:80px; overflow-y:auto;">${overview}</p>
   `;
   modal.style.display = 'flex';
 }
 
-closeModal.addEventListener('click', () => modal.style.display = 'none');
+closeModal.addEventListener('click', () => {
+  modal.style.display = 'none';
+  modalBody.innerHTML = '';
+});
+
 window.addEventListener('click', (e) => {
-  if (e.target === modal) modal.style.display = 'none';
+  if (e.target === modal) {
+    modal.style.display = 'none';
+    modalBody.innerHTML = '';
+  }
 });
 
 // Initial Load
-getMedia(`https://api.themoviedb.org/3/trending/movie/week?api_key=${API_KEY}`, 'movie');
+loadContent();

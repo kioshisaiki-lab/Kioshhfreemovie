@@ -17,10 +17,23 @@
     </div>
   </header>
 
-  <!-- Category Filter Buttons -->
+  <!-- Category & Genre Nav -->
   <nav class="category-nav">
-    <button id="btnMovies" class="nav-btn active">Movies</button>
-    <button id="btnTV" class="nav-btn">TV Series</button>
+    <div class="type-btns">
+      <button id="btnMovies" class="nav-btn active">Movies</button>
+      <button id="btnTV" class="nav-btn">TV Series</button>
+    </div>
+    
+    <!-- Dropdown Filter -->
+    <div class="genre-filter">
+      <select id="genreSelect">
+        <option value="">All Genres</option>
+        <option value="28">Action</option>
+        <option value="35">Comedy</option>
+        <option value="27">Horror</option>
+        <option value="16">Anime / Animation</option>
+      </select>
+    </div>
   </nav>
 
   <!-- Content Container -->

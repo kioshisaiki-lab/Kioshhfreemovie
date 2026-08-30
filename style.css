@@ -10,7 +10,6 @@ body {
   color: #fff;
 }
 
-/* Header */
 header {
   display: flex;
   flex-direction: column;
@@ -57,24 +56,31 @@ header {
   font-size: 14px;
 }
 
-/* Category Navigation */
+/* Category & Genre Navigation */
 .category-nav {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
-  gap: 15px;
-  padding: 15px 0;
+  align-items: center;
+  gap: 12px;
+  padding: 15px 10px;
   background: #12141a;
+}
+
+.type-btns {
+  display: flex;
+  gap: 8px;
 }
 
 .nav-btn {
   background: #22252f;
   color: #aaa;
   border: none;
-  padding: 8px 18px;
+  padding: 8px 16px;
   border-radius: 20px;
   font-weight: bold;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 13px;
 }
 
 .nav-btn.active {
@@ -82,7 +88,17 @@ header {
   color: #fff;
 }
 
-/* Movie Grid */
+.genre-filter select {
+  background: #22252f;
+  color: #fff;
+  border: 1px solid #333;
+  padding: 8px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  outline: none;
+  cursor: pointer;
+}
+
 .container {
   padding: 20px 4%;
 }
@@ -128,7 +144,6 @@ header {
   color: #ffb400;
 }
 
-/* Modal */
 .modal {
   display: none;
   position: fixed;
